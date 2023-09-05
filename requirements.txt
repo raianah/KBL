@@ -1,0 +1,6 @@
+disnake==2.8.0
+humanize
+pytz
+millify
+git+https://github.com/raianah/easy-pil
+apscheduler
