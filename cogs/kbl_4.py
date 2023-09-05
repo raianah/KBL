@@ -130,12 +130,10 @@ class kbl_4(commands.Cog):
 	async def gen_add_xp(self, message, xp, lvl):
 		xp_to_add = random.randint(10, 15)
 		coin_to_add = random.randint(4, 8)
-		lvl_limit, bonus_coins = db.record("SELECT GenLevelLimit, MonthlyBonusPoints FROM main WHERE UserID = ?", message.author.id)
-
-		conversion = bonus_coins_conversion(bonus_coins)
+		lvl_limit = db.field("SELECT GenLevelLimit FROM main WHERE UserID = ?", message.author.id)
 
 		db.execute("UPDATE main SET GeneralXP = GeneralXP + ?, GenLevelRest = ? WHERE UserID = ?", xp_to_add, int(time.time()+60), message.author.id)
-		db.execute("UPDATE main SET GlobalXP = GlobalXP + ?, Points = Points + ? WHERE UserID = ?", xp_to_add, coin_to_add+conversion, message.author.id)
+		db.execute("UPDATE main SET GlobalXP = GlobalXP + ?, Points = Points + ? WHERE UserID = ?", xp_to_add, coin_to_add, message.author.id)
 
 		if xp+xp_to_add >= lvl_limit:
 			db.execute("UPDATE main SET GenLevelLimit = GenLevelLimit + 100, GeneralXP = 0, GeneralLevel = GeneralLevel + 1 WHERE UserID = ?", message.author.id)
@@ -144,12 +142,10 @@ class kbl_4(commands.Cog):
 	async def mem_add_xp(self, message, xp, lvl):
 		xp_to_add = random.randint(10, 15)
 		coin_to_add = random.randint(4, 8)
-		lvl_limit, bonus_coins = db.record("SELECT MemLevelLimit, MonthlyBonusPoints FROM main WHERE UserID = ?", message.author.id)
-
-		conversion = bonus_coins_conversion(bonus_coins)
+		lvl_limit = db.field("SELECT MemLevelLimit FROM main WHERE UserID = ?", message.author.id)
 
 		db.execute("UPDATE main SET MemesXP = MemesXP + ?, MemLevelRest = ? WHERE UserID = ?", xp_to_add, int(time.time()+60), message.author.id)
-		db.execute("UPDATE main SET GlobalXP = GlobalXP + ?, Points = Points + ? WHERE UserID = ?", xp_to_add, coin_to_add+conversion, message.author.id)
+		db.execute("UPDATE main SET GlobalXP = GlobalXP + ?, Points = Points + ? WHERE UserID = ?", xp_to_add, coin_to_add, message.author.id)
 
 		if xp+xp_to_add >= lvl_limit:
 			db.execute("UPDATE main SET MemLevelLimit = MemLevelLimit + 100, MemesXP = 0, MemesLevel = MemesLevel + 1 WHERE UserID = ?", message.author.id)
@@ -158,13 +154,11 @@ class kbl_4(commands.Cog):
 	async def both_add_xp(self, message, xp, lvl):
 		xp_to_add_0, xp_to_add_1 = random.randint(10, 15), random.randint(10, 15)
 		coin_to_add_0 = random.randint(4, 8), random.randint(4, 8)
-		lvl_limit_0, lvl_limit_1, bonus_coins = db.record("SELECT GenLevelLimit, MemLevelLimit, MonthlyBonusPoints FROM main WHERE UserID = ?", message.author.id)
-
-		conversion = bonus_coins_conversion(bonus_coins)
+		lvl_limit_0, lvl_limit_1, = db.record("SELECT GenLevelLimit, MemLevelLimit FROM main WHERE UserID = ?", message.author.id)
 
 		db.execute("UPDATE main SET GeneralXP = GeneralXP + ?, GenLevelRest = ? WHERE UserID = ?", xp_to_add_0, int(time.time()+60), message.author.id)
 		db.execute("UPDATE main SET MemesXP = MemesXP + ?, MemLevelRest = ? WHERE UserID = ?", xp_to_add_1, int(time.time()+60), message.author.id)
-		db.execute("UPDATE main SET GlobalXP = GlobalXP + ?, Points = Points + ? WHERE UserID = ?", xp_to_add_0+xp_to_add_1, coin_to_add_0+conversion, message.author.id)
+		db.execute("UPDATE main SET GlobalXP = GlobalXP + ?, Points = Points + ? WHERE UserID = ?", xp_to_add_0+xp_to_add_1, coin_to_add_0, message.author.id)
 
 		if xp+xp_to_add_1 >= lvl_limit_1:
 			db.execute("UPDATE main SET MemLevelLimit = MemLevelLimit + 100, MemesXP = 0, MemesLevel = MemesLevel + 1 WHERE UserID = ?", message.author.id)
@@ -179,16 +173,15 @@ class kbl_4(commands.Cog):
 		lvltype, lvl = db.record("SELECT LevelUpType, GeneralLevel FROM main WHERE UserID = ?", message.author.id)
 		success, msg = gen_level_up(message, lvl)
 		if lvltype == 0:
-			if success == True:
-				await message.channel.send(msg)
-			else:
-				await message.channel.send(f"Mahusay, {message.author.mention}! Ikaw ay nag-level up na **(Level {lvl}!)** - **[LIPUNAN]**")
+			#if success == True:
+			#	await message.channel.send(msg)
+			#else:
+			await message.channel.send(f"Mahusay, {message.author.mention}! Ikaw ay nag-level up na **(Level {lvl}!)**")
 		elif lvltype == 1:
-			tbg = db.field("SELECT TextBG FROM main WHERE UserID = ?", message.author.id)
-			if success == True:
-				embed=Embed(title=f"Mahusay, {message.author}!", timestamp=datetime.datetime.now(), description=msg, color=0x2f3136)
-			else:
-				embed=Embed(title=f"Mahusay, {message.author}!", timestamp=datetime.datetime.now(), description=f"Mahusay, {message.author.mention}! Ikaw ay nag-level up na **(Level {lvl}!)**", color=0x2f3136)
+			#if success == True:
+			#	embed=Embed(title=f"Mahusay, {message.author}!", timestamp=datetime.datetime.now(), description=msg, color=0x2f3136)
+			#else:
+			embed=Embed(title=f"Mahusay, {message.author}!", timestamp=datetime.datetime.now(), description=f"Mahusay, {message.author.mention}! Ikaw ay nag-level up na **(Level {lvl}!)**", color=0x2f3136)
 			await message.channel.send(embed=embed)
 
 	async def mem_levelup_send(self, message: Message):
@@ -196,16 +189,15 @@ class kbl_4(commands.Cog):
 		lvltype, lvl = db.record("SELECT LevelUpType, MemesLevel FROM main WHERE UserID = ?", message.author.id)
 		success, msg = mem_level_up(message, lvl)
 		if lvltype == 0:
-			if success == True:
-				await message.channel.send(msg)
-			else:
-				await message.channel.send(f"Mahusay, {message.author.mention}! Ikaw ay nag-level up na **(Level {lvl}!)** - **[LAPAGAN]**")
+			#if success == True:
+			#	await message.channel.send(msg)
+			#else:
+			await message.channel.send(f"Mahusay, {message.author.mention}! Ikaw ay nag-level up na **(Level {lvl}!)**")
 		elif lvltype == 1:
-			tbg = db.field("SELECT TextBG FROM main WHERE UserID = ?", message.author.id)
-			if success == True:
-				embed=Embed(title=f"Mahusay, {message.author}!", timestamp=datetime.datetime.now(), description=msg, color=0x2f3136)
-			else:
-				embed=Embed(title=f"Mahusay, {message.author}!", timestamp=datetime.datetime.now(), description=f"Mahusay, {message.author.mention}! Ikaw ay nag-level up na **(Level {lvl}!)**", color=0x2f3136)
+			#if success == True:
+			#	embed=Embed(title=f"Mahusay, {message.author}!", timestamp=datetime.datetime.now(), description=msg, color=0x2f3136)
+			#else:
+			embed=Embed(title=f"Mahusay, {message.author}!", timestamp=datetime.datetime.now(), description=f"Mahusay, {message.author.mention}! Ikaw ay nag-level up na **(Level {lvl}!)**", color=0x2f3136)
 			await message.channel.send(embed=embed)
 
 	@commands.Cog.listener()
@@ -270,12 +262,12 @@ class kbl_4(commands.Cog):
 				await message.add_reaction('<:wahahaha:962970864003989505>')
 				await message.add_reaction('❌')
 				await message.add_reaction('♻️')
-			#if message.channel.id in [961504020508340294, 1045888798791323762, 1026473207995305984, 961504084391772160]:
-			#    await self.mem_process_xp(message)
-			#elif message.channel.id in [961503519913938984, 978606766638116864]:
-			#    await self.both_process_xp(message)
-			#elif message.channel.id in [961504364269301764, 961504384636846090, 961504419151745084, 961504460008489022, 969770039857270854, 966977955534356480, 961504650270502932]:
-			#    await self.gen_process_xp(message)
+			if message.channel.id in [961504020508340294, 1045888798791323762, 1026473207995305984, 961504084391772160]:
+				await self.mem_process_xp(message)
+			elif message.channel.id in [961503519913938984, 978606766638116864]:
+				await self.both_process_xp(message)
+			elif message.channel.id in [961504364269301764, 961504384636846090, 961504419151745084, 961504460008489022, 969770039857270854, 966977955534356480, 961504650270502932]:
+				await self.gen_process_xp(message)
 
 	@commands.Cog.listener()
 	async def on_raw_reaction_add(self, payload):
