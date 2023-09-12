@@ -3,7 +3,7 @@
 .idea/
 
 # Custom Files
-.data/
+data/
 
 ## Ignore Python - https://github.com/github/gitignore/blob/master/Python.gitignore
 

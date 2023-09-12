@@ -1,5 +1,5 @@
 # --- DATES IN SECONDS --- #
-# OCTOBER 1   - 1696089600 #
+# OCTOBER 1   - 1696089600 # --- DONE ---
 # NOVEMBER 1  - 1698768000 #
 # DECEMBER 1  - 1701360000 #
 # JANUARY 1   - 1704038400 #
@@ -46,11 +46,11 @@ class kbl_5(commands.Cog):
 			for i in range(20, 30):
 				db.execute("UPDATE trophies SET Bronze = Bronze + 1 WHERE UserID = ?", top_members[i][0])
 				db.execute("UPDATE main SET SPBonus = 0.3, SPBonusTime = ? WHERE UserID = ?", int(time.time())+259200, top_members[i][0])
-			db.execute("UPDATE global SET MEA = 1696089600")
+			db.execute("UPDATE global SET MEA = 1698768000")
 			embed0 = Embed(color=0x2f3136, title=f"Meme Excellence Awards ({month_now})", description=f"{diamond}\n{platinum}\n{gold}")
 			embed1 = Embed(color=0x2f3136, title=f"Meme Excellence Awards ({month_now})", description=f"{silver}")
 			embed2 = Embed(color=0x2f3136, title=f"Meme Excellence Awards ({month_now})", description=f"{bronze}").set_footer(text="Your SP will be reset to 0. Keep grinding to reach higher score!")
-			await channel.send(content="Congratulations on the **Top 30** meme posters of the month! Continue grinding your points to be recognized in the next awarding <t:1696089600:R>", embeds=[embed0, embed1, embed2])
+			await channel.send(content="Congratulations on the **Top 30** meme posters of the month! Continue grinding your points to be recognized in the next awarding <t:1698768000:R>", embeds=[embed0, embed1, embed2])
 		sp_expired_reward = db.column("SELECT UserID FROM main WHERE SPBonusTime < ? AND SPBonusTime != 0", int(time.time()))
 		if len(sp_expired_reward) > 0:
 			for member in sp_expired_reward:

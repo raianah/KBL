@@ -86,12 +86,13 @@ class kbl_3(commands.Cog):
 
 	@commands.command()
 	async def vote(self, ctx):
-		return await ctx.send("This command is not included in this month's Beta Test. Please wait for announcements regarding this test and who may use it.")
+		return await ctx.send("Thank you for participating in the past __testing phase__. Unfortunately we need to polish things on our side before fully releasing this update.\n\nAll progress will reset by the time leveling will re-release. Please be guided.\n\nNext Beta Test: <t:1696118400:D> - <t:1697328000:D>")
 		await ctx.send("__Help upvote Kilusang B\*bong Lipunan and receive rewards upon voting!__\n\n**Link**: <https://top.gg/servers/961502956195303494/vote>\n**Rewards**: +5 Bonus **__Solid Points__**\n\n**__Solid Points__** can be used to purchase text/outline colors via `.shop`. Your regular addition of SP will increase by 5 for 12 hours.")
 
 	@commands.command(aliases=['stats', 'statistic', 'stat', 'st'])
 	async def statistics(self, ctx, member: Union[Member, str]=None):
 		await ctx.trigger_typing()
+		return await ctx.send("Thank you for participating in the past __testing phase__. Unfortunately we need to polish things on our side before fully releasing this update.\n\nAll progress will reset by the time leveling will re-release. Please be guided.\n\nNext Beta Test: <t:1696118400:D> - <t:1697328000:D>")
 		m, md = db.record("SELECT Maintenance, MaintenanceDuration FROM global")
 		if m == 1:
 			return await ctx.send(f"<@1050024676627320872> is currently in maintenance! Try again later.\n\nETA: <t:{md+3600}:R>")
@@ -245,6 +246,7 @@ class kbl_3(commands.Cog):
 	@commands.command(aliases=["level", "lvl"])
 	async def rank(self, ctx, member: Union[Member, str]=None, suffix=None):
 		await ctx.trigger_typing()
+		return await ctx.send("Thank you for participating in the past __testing phase__. Unfortunately we need to polish things on our side before fully releasing this update.\n\nAll progress will reset by the time leveling will re-release. Please be guided.\n\nNext Beta Test: <t:1696118400:D> - <t:1697328000:D>")
 		m, md = db.record("SELECT Maintenance, MaintenanceDuration FROM global")
 		if m == 1:
 			return await ctx.send(f"<@1050024676627320872> is currently in maintenance! Try again later.\n\nETA: <t:{md+3600}:R>")
@@ -454,6 +456,7 @@ class kbl_3(commands.Cog):
 	@commands.command(aliases=["market"])
 	async def shop(self, ctx):
 		await ctx.trigger_typing()
+		return await ctx.send("Thank you for participating in the past __testing phase__. Unfortunately we need to polish things on our side before fully releasing this update.\n\nAll progress will reset by the time leveling will re-release. Please be guided.\n\nNext Beta Test: <t:1696118400:D> - <t:1697328000:D>")
 		m, md = db.record("SELECT Maintenance, MaintenanceDuration FROM global")
 		if m == 1:
 			return await ctx.send(f"<@1050024676627320872> is currently in maintenance! Try again later.\n\nETA: <t:{md+3600}:R>")
@@ -464,6 +467,7 @@ class kbl_3(commands.Cog):
 	@commands.command(aliases=["rsettings", "rsetting", "rs"])
 	async def ranksettings(self, ctx):
 		await ctx.trigger_typing()
+		return await ctx.send("Thank you for participating in the past __testing phase__. Unfortunately we need to polish things on our side before fully releasing this update.\n\nAll progress will reset by the time leveling will re-release. Please be guided.\n\nNext Beta Test: <t:1696118400:D> - <t:1697328000:D>")
 		m, md = db.record("SELECT Maintenance, MaintenanceDuration FROM global")
 		if m == 1:
 			return await ctx.send(f"<@1050024676627320872> is currently in maintenance! Try again later.\n\nETA: <t:{md+3600}:R>")
@@ -533,7 +537,7 @@ class kbl_3(commands.Cog):
 			return await ctx.send(f"<@1050024676627320872> is currently in maintenance! Try again later.\n\nETA: <t:{md+3600}:R>")
 		mems = [member.id for member in ctx.guild.members if not member.bot]
 		if suffix is None:
-			return await ctx.send("Thank you for participating in the past __testing phase__. Unfortunately we need to polish things on our side before fully releasing this update.\n\nAll progress will reset by the time leveling will re-release. Please be guided.")
+			return await ctx.send("Thank you for participating in the past __testing phase__. Unfortunately we need to polish things on our side before fully releasing this update.\n\nAll progress will reset by the time leveling will re-release. Please be guided.\n\nNext Beta Test: <t:1696118400:D> - <t:1697328000:D>")
 			lb = db.records("SELECT UserID, GeneralLevel, GeneralXP FROM main ORDER BY GeneralLevel DESC, GeneralXP DESC")
 			lb_ = db.column("SELECT UserID FROM main ORDER BY GeneralLevel DESC, GeneralXP DESC")
 			for i in range(len(lb)-1):
@@ -546,7 +550,7 @@ class kbl_3(commands.Cog):
 			paginator = LeaderboardPages(entries=lb, ctx=ctx, _type="General Category", users=lb_, client=self.client)
 			await paginator.start()
 		elif suffix in ["--m", "--memes", "--meme"]:
-			return await ctx.send("Thank you for participating in the past __testing phase__. Unfortunately we need to polish things on our side before fully releasing this update.\n\nAll progress will reset by the time leveling will re-release. Please be guided.")
+			return await ctx.send("Thank you for participating in the past __testing phase__. Unfortunately we need to polish things on our side before fully releasing this update.\n\nAll progress will reset by the time leveling will re-release. Please be guided.\n\nNext Beta Test: <t:1696118400:D> - <t:1697328000:D>")
 			lb = db.records("SELECT UserID, MemesLevel, MemesXP FROM main ORDER BY MemesLevel DESC, MemesXP DESC")
 			lb_ = db.column("SELECT UserID FROM main ORDER BY MemesLevel DESC, MemesXP DESC")
 			for i in range(len(lb)-1):
@@ -559,17 +563,19 @@ class kbl_3(commands.Cog):
 			paginator = LeaderboardPages(entries=lb, ctx=ctx, _type="Memes Category", users=lb_, client=self.client)
 			await paginator.start()
 		elif suffix.lower() in ["--messages", "--message", "--msgs", "--msg"]:
+			return await ctx.send("Thank you for participating in the past __testing phase__. Unfortunately we need to polish things on our side before fully releasing this update.\n\nAll progress will reset by the time leveling will re-release. Please be guided.\n\nNext Beta Test: <t:1696118400:D> - <t:1697328000:D>")
 			lb = db.records("SELECT UserID, Messages FROM main ORDER BY Messages DESC")
 			lb_ = db.column("SELECT UserID FROM main ORDER BY Messages DESC")
 			paginator = LeaderboardPages(entries=lb, ctx=ctx, _type="Messages", users=lb_, client=self.client)
 			await paginator.start()
 		elif suffix.lower() in ["--ligtaspoints", "--ligtas", "--lp"]:
+			return await ctx.send("Thank you for participating in the past __testing phase__. Unfortunately we need to polish things on our side before fully releasing this update.\n\nAll progress will reset by the time leveling will re-release. Please be guided.\n\nNext Beta Test: <t:1696118400:D> - <t:1697328000:D>")
 			lb = db.records("SELECT UserID, LigtasPoints FROM main ORDER BY LigtasPoints DESC")
 			lb_ = db.column("SELECT UserID FROM main ORDER BY LigtasPoints DESC")
 			paginator = LeaderboardPages(entries=lb, ctx=ctx, _type="Ligtas Points", users=lb_, client=self.client)
 			await paginator.start()
 		elif suffix.lower() in ["--coins", "--coin", "--points", "--point", "--pts", "--pt"]:
-			return await ctx.send("Thank you for participating in the past __testing phase__. Unfortunately we need to polish things on our side before fully releasing this update.\n\nAll progress will reset by the time leveling will re-release. Please be guided.")
+			return await ctx.send("Thank you for participating in the past __testing phase__. Unfortunately we need to polish things on our side before fully releasing this update.\n\nAll progress will reset by the time leveling will re-release. Please be guided.\n\nNext Beta Test: <t:1696118400:D> - <t:1697328000:D>")
 			lb = db.records("SELECT UserID, Points FROM main ORDER BY Points DESC")
 			lb_ = db.column("SELECT UserID FROM main ORDER BY Points DESC")
 			for i in range(len(lb)-1):
@@ -584,7 +590,7 @@ class kbl_3(commands.Cog):
 		elif suffix.lower() in ["--solidpoints", "--solid", "--sp"]:
 			await ctx.send("The command has been shifted to `.sp`.")
 		else:
-			return await ctx.send("Thank you for participating in the past __testing phase__. Unfortunately we need to polish things on our side before fully releasing this update.\n\nAll progress will reset by the time leveling will re-release. Please be guided.")
+			return await ctx.send("Thank you for participating in the past __testing phase__. Unfortunately we need to polish things on our side before fully releasing this update.\n\nAll progress will reset by the time leveling will re-release. Please be guided.\n\nNext Beta Test: <t:1696118400:D> - <t:1697328000:D>")
 			lb = db.records("SELECT UserID, GeneralLevel, GeneralXP FROM main ORDER BY GeneralLevel DESC, GeneralXP DESC")
 			lb_ = db.column("SELECT UserID FROM main ORDER BY GeneralLevel DESC, GeneralXP DESC")
 			for i in range(len(lb)-1):

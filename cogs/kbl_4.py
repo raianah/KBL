@@ -262,12 +262,12 @@ class kbl_4(commands.Cog):
 				await message.add_reaction('<:wahahaha:962970864003989505>')
 				await message.add_reaction('❌')
 				await message.add_reaction('♻️')
-			if message.channel.id in [961504020508340294, 1045888798791323762, 1026473207995305984, 961504084391772160]:
-				await self.mem_process_xp(message)
-			elif message.channel.id in [961503519913938984, 978606766638116864]:
-				await self.both_process_xp(message)
-			elif message.channel.id in [961504364269301764, 961504384636846090, 961504419151745084, 961504460008489022, 969770039857270854, 966977955534356480, 961504650270502932]:
-				await self.gen_process_xp(message)
+			#if message.channel.id in [961504020508340294, 1045888798791323762, 1026473207995305984, 961504084391772160]:
+			#	await self.mem_process_xp(message)
+			#elif message.channel.id in [961503519913938984, 978606766638116864]:
+			#	await self.both_process_xp(message)
+			#elif message.channel.id in [961504364269301764, 961504384636846090, 961504419151745084, 961504460008489022, 969770039857270854, 966977955534356480, 961504650270502932]:
+			#	await self.gen_process_xp(message)
 
 	@commands.Cog.listener()
 	async def on_raw_reaction_add(self, payload):
