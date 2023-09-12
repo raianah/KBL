@@ -70,7 +70,8 @@ class Bot(BotBase):
 				index += 1
 		for member in guild.members:
 			roles = [role.id for role in member.roles]
-			if 961967298955079740 in roles:
+			reg = db.record("SELECT * FROM trophies WHERE UserID = ?", member.id)
+			if reg is None and not member.bot and 961967298955079740 in roles:
 				db.execute("INSERT INTO trophies (UserID) VALUES (?)", member.id)
 				t_index += 1
 		print(f"{index} members registered.\n{t_index} members added.")
