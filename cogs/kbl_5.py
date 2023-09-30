@@ -1,11 +1,11 @@
 # --- DATES IN SECONDS --- #
-# OCTOBER 1   - 1696089600 # --- DONE ---
-# NOVEMBER 1  - 1698768000 #
-# DECEMBER 1  - 1701360000 #
-# JANUARY 1   - 1704038400 #
-# FEBRUARY 1  - 1706716800 #
-# MARCH 1     - 1709222400 #
-# APRIL 1     - 1711900800 #
+# SEPTEMBER 30 - 1696075200 # --- DONE ---
+# OCTOBER 28   - 1698494400 #
+# DECEMBER 1   - 1701360000 #
+# JANUARY 1    - 1704038400 #
+# FEBRUARY 1   - 1706716800 #
+# MARCH 1      - 1709222400 #
+# APRIL 1      - 1711900800 #
 # ------------------------ #
 
 import time, datetime, pytz
@@ -13,6 +13,8 @@ from disnake import Embed, Member
 from disnake.ext import commands, tasks
 from mizuki.db import db
 from properties.misc_1 import LeaderboardPages
+
+db.execute("UPDATE global SET MEA = 1696075200")
 
 class kbl_5(commands.Cog):
 	def __init__(self, client):
@@ -27,17 +29,18 @@ class kbl_5(commands.Cog):
 			date_now = datetime.datetime.now(manila_time)
 			month_now = date_now.strftime("%B")
 			channel = await self.client.fetch_channel(961504020508340294)
-			top_members = db.records("SELECT UserID, BonusCoins FROM main ORDER BY BonusCoins DESC")
+			top_members = db.records("SELECT UserID, MonthlyBonusCoins FROM main ORDER BY MonthlyBonusCoins DESC")
 			diamond = f"<:diamond_trophy:1135933219670339664> • <@!{top_members[0][0]}>: **{top_members[0][1]} SP**"
-			platinum = f"<:platinum_trophy:1135933215761244310> • <@!{top_members[1][0]}>: **{top_members[1][1]} SP**"
-			gold = "\n".join([f"<:golden_trophy:1094533382395920444> • <@!{top_members[i][0]}>: **{top_members[i][1]} SP**" for i, j in enumerate(top_members[2:10], 3)])
+			platinum = "\n".join([f"<:platinum_trophy:1135933215761244310> • <@!{top_members[i][0]}>: **{top_members[i][1]} SP**" for i, j in enumerate(top_members[1:3], 2)])
+			gold = "\n".join([f"<:golden_trophy:1094533382395920444> • <@!{top_members[i][0]}>: **{top_members[i][1]} SP**" for i, j in enumerate(top_members[3:10], 4)])
 			silver = "\n".join([f"<:silver_trophy:1094533380458156112> • <@!{top_members[i][0]}>: **{top_members[i][1]} SP**" for i, j in enumerate(top_members[10:20], 11)])
 			bronze = "\n".join([f"<:bronze_trophy:1094533376096075897> • <@!{top_members[i][0]}>: **{top_members[i][1]} SP**" for i, j in enumerate(top_members[20:30], 21)])
 			db.execute("UPDATE trophies SET Diamond = Diamond + 1 WHERE UserID = ?", top_members[0][0])
-			db.execute("UPDATE trophies SET Platinum = Platinum + 1 WHERE UserID = ?", top_members[1][0])
 			for i in range(2):
 				db.execute("UPDATE main SET SPBonus = 0.5, SPBonusTime = ? WHERE UserID = ?", int(time.time())+432000, top_members[i][0])
-			for i in range(2, 10):
+			for i in range(1, 3):
+				db.execute("UPDATE trophies SET Platinum = Platinum + 1 WHERE UserID = ?", top_members[i][0])
+			for i in range(3, 10):
 				db.execute("UPDATE trophies SET Gold = Gold + 1 WHERE UserID = ?", top_members[i][0])
 				db.execute("UPDATE main SET SPBonus = 0.4, SPBonusTime = ? WHERE UserID = ?", int(time.time())+345600, top_members[i][0])
 			for i in range(10, 20):
@@ -46,11 +49,13 @@ class kbl_5(commands.Cog):
 			for i in range(20, 30):
 				db.execute("UPDATE trophies SET Bronze = Bronze + 1 WHERE UserID = ?", top_members[i][0])
 				db.execute("UPDATE main SET SPBonus = 0.3, SPBonusTime = ? WHERE UserID = ?", int(time.time())+259200, top_members[i][0])
-			db.execute("UPDATE global SET MEA = 1698768000")
+			for i in range(len(top_members) - 1):
+				db.execute("UPDATE main SET BonusCoins = BonusCoins + ?, MonthlyBonusCoins = 0 WHERE UserID = ?", top_members[i][1], top_members[i][0])
+			db.execute("UPDATE global SET MEA = 1698494400")
 			embed0 = Embed(color=0x2f3136, title=f"Meme Excellence Awards ({month_now})", description=f"{diamond}\n{platinum}\n{gold}")
 			embed1 = Embed(color=0x2f3136, title=f"Meme Excellence Awards ({month_now})", description=f"{silver}")
 			embed2 = Embed(color=0x2f3136, title=f"Meme Excellence Awards ({month_now})", description=f"{bronze}").set_footer(text="Your SP will be reset to 0. Keep grinding to reach higher score!")
-			await channel.send(content="Congratulations on the **Top 30** meme posters of the month! Continue grinding your points to be recognized in the next awarding <t:1698768000:R>", embeds=[embed0, embed1, embed2])
+			await channel.send(content="Congratulations on the **Top 30** meme posters of the month! Continue grinding your points to be recognized in the next awarding <t:1698494400:R>", embeds=[embed0, embed1, embed2])
 		sp_expired_reward = db.column("SELECT UserID FROM main WHERE SPBonusTime < ? AND SPBonusTime != 0", int(time.time()))
 		if len(sp_expired_reward) > 0:
 			for member in sp_expired_reward:

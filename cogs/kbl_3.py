@@ -86,8 +86,7 @@ class kbl_3(commands.Cog):
 
 	@commands.command()
 	async def vote(self, ctx):
-		return await ctx.send("Thank you for participating in the past __testing phase__. Unfortunately we need to polish things on our side before fully releasing this update.\n\nAll progress will reset by the time leveling will re-release. Please be guided.\n\nNext Beta Test: <t:1696118400:D> - <t:1697328000:D>")
-		await ctx.send("__Help upvote Kilusang B\*bong Lipunan and receive rewards upon voting!__\n\n**Link**: <https://top.gg/servers/961502956195303494/vote>\n**Rewards**: +5 Bonus **__Solid Points__**\n\n**__Solid Points__** can be used to purchase text/outline colors via `.shop`. Your regular addition of SP will increase by 5 for 12 hours.")
+		await ctx.send("__Help upvote Kilusang B\*bong Lipunan and receive rewards upon voting!__\n\n**Link**: <https://top.gg/servers/961502956195303494/vote>\n**Rewards**: x2 gain to **__Solid Points__** reactions (<:wahahaha:962970864003989505>, ❌, ♻️) for 12 hours.")
 
 	@commands.command(aliases=['stats', 'statistic', 'stat', 'st'])
 	async def statistics(self, ctx, member: Union[Member, str]=None):
@@ -563,13 +562,13 @@ class kbl_3(commands.Cog):
 			paginator = LeaderboardPages(entries=lb, ctx=ctx, _type="Memes Category", users=lb_, client=self.client)
 			await paginator.start()
 		elif suffix.lower() in ["--messages", "--message", "--msgs", "--msg"]:
-			return await ctx.send("Thank you for participating in the past __testing phase__. Unfortunately we need to polish things on our side before fully releasing this update.\n\nAll progress will reset by the time leveling will re-release. Please be guided.\n\nNext Beta Test: <t:1696118400:D> - <t:1697328000:D>")
+			#return await ctx.send("Thank you for participating in the past __testing phase__. Unfortunately we need to polish things on our side before fully releasing this update.\n\nAll progress will reset by the time leveling will re-release. Please be guided.\n\nNext Beta Test: <t:1696118400:D> - <t:1697328000:D>")
 			lb = db.records("SELECT UserID, Messages FROM main ORDER BY Messages DESC")
 			lb_ = db.column("SELECT UserID FROM main ORDER BY Messages DESC")
 			paginator = LeaderboardPages(entries=lb, ctx=ctx, _type="Messages", users=lb_, client=self.client)
 			await paginator.start()
 		elif suffix.lower() in ["--ligtaspoints", "--ligtas", "--lp"]:
-			return await ctx.send("Thank you for participating in the past __testing phase__. Unfortunately we need to polish things on our side before fully releasing this update.\n\nAll progress will reset by the time leveling will re-release. Please be guided.\n\nNext Beta Test: <t:1696118400:D> - <t:1697328000:D>")
+			#return await ctx.send("Thank you for participating in the past __testing phase__. Unfortunately we need to polish things on our side before fully releasing this update.\n\nAll progress will reset by the time leveling will re-release. Please be guided.\n\nNext Beta Test: <t:1696118400:D> - <t:1697328000:D>")
 			lb = db.records("SELECT UserID, LigtasPoints FROM main ORDER BY LigtasPoints DESC")
 			lb_ = db.column("SELECT UserID FROM main ORDER BY LigtasPoints DESC")
 			paginator = LeaderboardPages(entries=lb, ctx=ctx, _type="Ligtas Points", users=lb_, client=self.client)

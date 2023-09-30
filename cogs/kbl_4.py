@@ -208,12 +208,9 @@ class kbl_4(commands.Cog):
 	async def voting_check(self):
 		members = db.column("SELECT UserID FROM main")
 		for member in members:
-			votes, duration = db.record("SELECT MonthlyBonusPoints, VotingDuration FROM main WHERE UserID = ?", member)
+			duration = db.field("SELECT VotingBonus, VotingDuration FROM main WHERE UserID = ?", member)
 			if int(time.time()) >= duration and duration > 0:
-				if votes < 70.0:
-					db.execute("UPDATE main SET VotingDuration = 0, MonthlyBonusPoints = 0.0 WHERE UserID = ?", member)
-				else:
-					db.execute("UPDATE main SET VotingDuration = 0, MonthlyBonusPoints = MonthlyBonusPoints - 70.0 WHERE UserID = ?", member)
+				db.execute("UPDATE main SET VotingDuration = 0, VotingBonus = 0.0 WHERE UserID = ?", member)
 
 	@commands.Cog.listener("on_message")
 	async def leveling_checks(self, message):
@@ -226,7 +223,7 @@ class kbl_4(commands.Cog):
 				db.execute("INSERT INTO main (UserID) VALUES (?)", message.author.id)
 			db.execute("UPDATE main SET Messages = Messages + 1 WHERE UserID = ?", message.author.id)
 			if len(message.mentions) == 1:
-				check = any(ele.lower() in message.content for ele in ["thanks", "thank you", "thanks you", "thank", "salamat", "slmat", "slmt"])
+				check = any(ele.lower() in message.content.lower() for ele in ["thanks", "thank you", "thanks you", "thank", "salamat", "slmat", "slmt"])
 				if check:
 					msg = message.mentions[0]
 					if not msg.bot and not message.author.id == msg.id:
@@ -276,14 +273,15 @@ class kbl_4(commands.Cog):
 		channel = self.client.get_channel(payload.channel_id)
 		msg = await channel.fetch_message(payload.message_id)
 		if payload.channel_id in [961504020508340294, 1045888798791323762] and msg.attachments:
+			sp_bonus, voting_bonus = db.record("SELECT SPBonus, VotingBonus FROM main WHERE UserID = ?", payload.user_id)
 			if payload.user_id == msg.author.id:
 				await msg.remove_reaction(payload.emoji, payload.member.id)
 			elif str(payload.emoji) == "<:wahahaha:962970864003989505>":
-				db.execute("UPDATE main SET MonthlyBonusPoints = MonthlyBonusPoints + 1.0 WHERE UserID = ?", payload.user_id)
+				db.execute("UPDATE main SET MonthlyBonusPoints = MonthlyBonusPoints + ? WHERE UserID = ?", (1.0 * voting_bonus) + sp_bonus, payload.user_id)
 			elif str(payload.emoji) == "❌":
-				db.execute("UPDATE main SET MonthlyBonusPoints = MonthlyBonusPoints - 0.5 WHERE UserID = ?", payload.user_id)
+				db.execute("UPDATE main SET MonthlyBonusPoints = MonthlyBonusPoints - ? WHERE UserID = ?", (0.5 * voting_bonus), payload.user_id)
 			elif str(payload.emoji) == "♻️":
-				db.execute("UPDATE main SET MonthlyBonusPoints = MonthlyBonusPoints - 0.5 WHERE UserID = ?", payload.user_id)
+				db.execute("UPDATE main SET MonthlyBonusPoints = MonthlyBonusPoints - ? WHERE UserID = ?", (1.0 * voting_bonus), payload.user_id)
 			if payload.channel_id in [961504364269301764, 961503519913938984] and str(payload.emoji) == "<:wahahaha:962970864003989505>" and msg.attachments and msg.reactions[0].count == 20:
 				starboard, starboard_list = db.field("SELECT StarboardList, StarboardPList FROM global")
 				user_starboard = db.field("SELECT StarboardList FROM main WHERE UserID = ?", msg.author.id)
@@ -354,12 +352,12 @@ class kbl_4(commands.Cog):
 					if reg is None:
 						db.execute("INSERT INTO main (UserID) VALUES (?)", m1)
 					dt = datetime.datetime.now().weekday()
-					if dt in [4, 5, 6]:
-						amt = "**__+3 SP__**"
-						db.execute("UPDATE main SET MonthlyBonusPoints = MonthlyBonusPoints + 70.0, VotingDuration = ? WHERE UserID = ?", int(time.time())+43200, m1)
-					else:
-						amt = "**__+3 SP__**"
-						db.execute("UPDATE main SET MonthlyBonusPoints = MonthlyBonusPoints + 70.0, VotingDuration = ? WHERE UserID = ?", int(time.time())+43200, m1)
+					#if dt in [4, 5, 6]:
+					#	amt = "**__x2 SP__**"
+					#	db.execute("UPDATE main SET MonthlyBonusPoints = MonthlyBonusPoints + 70.0, VotingDuration = ? WHERE UserID = ?", int(time.time())+43200, m1)
+					#else:
+					amt = "**__x2 SP__**"
+					db.execute("UPDATE main SET VotingBonus = 2, VotingDuration = ? WHERE UserID = ?", int(time.time())+43200, m1)
 					print(f"Done distributing the rewards to {m1}.")
 					try:
 						user = await self.client.fetch_user(m1)

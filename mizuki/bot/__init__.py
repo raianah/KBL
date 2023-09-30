@@ -1,7 +1,7 @@
 import os, time, time
 from disnake.ext.commands import Bot as BotBase, errors
 from dotenv import load_dotenv
-from disnake import Intents, Activity, ActivityType, AllowedMentions, Embed, Status
+from disnake import Intents, Activity, ActivityType, AllowedMentions
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from ..db import db
 from glob import glob
