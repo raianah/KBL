@@ -14,8 +14,6 @@ from disnake.ext import commands, tasks
 from mizuki.db import db
 from properties.misc_1 import LeaderboardPages
 
-db.execute("UPDATE global SET MEA = 1696075200")
-
 class kbl_5(commands.Cog):
 	def __init__(self, client):
 		self.client = client
@@ -29,7 +27,7 @@ class kbl_5(commands.Cog):
 			date_now = datetime.datetime.now(manila_time)
 			month_now = date_now.strftime("%B")
 			channel = await self.client.fetch_channel(961504020508340294)
-			top_members = db.records("SELECT UserID, MonthlyBonusCoins FROM main ORDER BY MonthlyBonusCoins DESC")
+			top_members = db.records("SELECT UserID, MonthlyBonusPoints FROM main ORDER BY MonthlyBonusPoints DESC")
 			diamond = f"<:diamond_trophy:1135933219670339664> • <@!{top_members[0][0]}>: **{top_members[0][1]} SP**"
 			platinum = "\n".join([f"<:platinum_trophy:1135933215761244310> • <@!{top_members[i][0]}>: **{top_members[i][1]} SP**" for i, j in enumerate(top_members[1:3], 2)])
 			gold = "\n".join([f"<:golden_trophy:1094533382395920444> • <@!{top_members[i][0]}>: **{top_members[i][1]} SP**" for i, j in enumerate(top_members[3:10], 4)])
@@ -50,7 +48,7 @@ class kbl_5(commands.Cog):
 				db.execute("UPDATE trophies SET Bronze = Bronze + 1 WHERE UserID = ?", top_members[i][0])
 				db.execute("UPDATE main SET SPBonus = 0.3, SPBonusTime = ? WHERE UserID = ?", int(time.time())+259200, top_members[i][0])
 			for i in range(len(top_members) - 1):
-				db.execute("UPDATE main SET BonusCoins = BonusCoins + ?, MonthlyBonusCoins = 0 WHERE UserID = ?", top_members[i][1], top_members[i][0])
+				db.execute("UPDATE main SET BonusCoins = BonusCoins + ?, MonthlyBonusPoints = 0 WHERE UserID = ?", top_members[i][1], top_members[i][0])
 			db.execute("UPDATE global SET MEA = 1698494400")
 			embed0 = Embed(color=0x2f3136, title=f"Meme Excellence Awards ({month_now})", description=f"{diamond}\n{platinum}\n{gold}")
 			embed1 = Embed(color=0x2f3136, title=f"Meme Excellence Awards ({month_now})", description=f"{silver}")
