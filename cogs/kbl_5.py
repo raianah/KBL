@@ -27,6 +27,7 @@ class kbl_5(commands.Cog):
 			date_now = datetime.datetime.now(manila_time)
 			month_now = date_now.strftime("%B")
 			channel = await self.client.fetch_channel(961504020508340294)
+			radio_channel = await self.client.fetch_channel(961503519913938984)
 			top_members = db.records("SELECT UserID, MonthlyBonusPoints FROM main ORDER BY MonthlyBonusPoints DESC")
 			diamond = f"<:diamond_trophy:1135933219670339664> • <@!{top_members[0][0]}>: **{top_members[0][1]} SP**"
 			platinum = "\n".join([f"<:platinum_trophy:1135933215761244310> • <@!{top_members[i][0]}>: **{top_members[i][1]} SP**" for i, j in enumerate(top_members[1:3], 2)])
@@ -54,6 +55,7 @@ class kbl_5(commands.Cog):
 			embed1 = Embed(color=0x2f3136, title=f"Meme Excellence Awards ({month_now})", description=f"{silver}")
 			embed2 = Embed(color=0x2f3136, title=f"Meme Excellence Awards ({month_now})", description=f"{bronze}").set_footer(text="Your SP will be reset to 0. Keep grinding to reach higher score!")
 			await channel.send(content="Congratulations on the **Top 30** meme posters of the month! Continue grinding your points to be recognized in the next awarding <t:1698494400:R>", embeds=[embed0, embed1, embed2])
+			await radio_channel.send(content="Congratulations on the **Top 30** meme posters of the month! Continue grinding your points to be recognized in the next awarding <t:1698494400:R>", embeds=[embed0, embed1, embed2])
 		sp_expired_reward = db.column("SELECT UserID FROM main WHERE SPBonusTime < ? AND SPBonusTime != 0", int(time.time()))
 		if len(sp_expired_reward) > 0:
 			for member in sp_expired_reward:
