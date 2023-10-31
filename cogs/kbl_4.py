@@ -210,7 +210,7 @@ class kbl_4(commands.Cog):
 		for member in members:
 			duration = db.field("SELECT VotingBonus, VotingDuration FROM main WHERE UserID = ?", member)
 			if int(time.time()) >= duration and duration > 0:
-				db.execute("UPDATE main SET VotingDuration = 0, VotingBonus = 0.0 WHERE UserID = ?", member)
+				db.execute("UPDATE main SET VotingDuration = 0, VotingBonus = 1.0 WHERE UserID = ?", member)
 
 	@commands.Cog.listener("on_message")
 	async def leveling_checks(self, message):
@@ -263,8 +263,10 @@ class kbl_4(commands.Cog):
 			#	await self.mem_process_xp(message)
 			#elif message.channel.id in [961503519913938984, 978606766638116864]:
 			#	await self.both_process_xp(message)
-			#elif message.channel.id in [961504364269301764, 961504384636846090, 961504419151745084, 961504460008489022, 969770039857270854, 966977955534356480, 961504650270502932]:
-			#	await self.gen_process_xp(message)
+			if message.channel.id in [961504364269301764, 961504384636846090, 961504419151745084, 961504460008489022, 969770039857270854, 966977955534356480, 961504650270502932]:
+				if "happy halloween" in message.content:
+					await message.add_reaction('🎃')
+				await self.gen_process_xp(message)
 
 	@commands.Cog.listener()
 	async def on_raw_reaction_add(self, payload):
@@ -274,14 +276,16 @@ class kbl_4(commands.Cog):
 		msg = await channel.fetch_message(payload.message_id)
 		if payload.channel_id in [961504020508340294, 1045888798791323762] and msg.attachments:
 			sp_bonus, voting_bonus = db.record("SELECT SPBonus, VotingBonus FROM main WHERE UserID = ?", payload.user_id)
+			if voting_bonus == 0:
+				voting_bonus = 1
 			if payload.user_id == msg.author.id:
-				await msg.remove_reaction(payload.emoji, payload.member.id)
+				await msg.remove_reaction(payload.emoji, payload.user_id)
 			elif str(payload.emoji) == "<:wahahaha:962970864003989505>":
 				db.execute("UPDATE main SET MonthlyBonusPoints = MonthlyBonusPoints + ? WHERE UserID = ?", (1.0 * voting_bonus) + sp_bonus, payload.user_id)
 			elif str(payload.emoji) == "❌":
 				db.execute("UPDATE main SET MonthlyBonusPoints = MonthlyBonusPoints - ? WHERE UserID = ?", (0.5 * voting_bonus), payload.user_id)
 			elif str(payload.emoji) == "♻️":
-				db.execute("UPDATE main SET MonthlyBonusPoints = MonthlyBonusPoints - ? WHERE UserID = ?", (1.0 * voting_bonus), payload.user_id)
+				db.execute("UPDATE main SET MonthlyBonusPoints = MonthlyBonusPoints - ? WHERE UserID = ?", (0.5 * voting_bonus), payload.user_id)
 			if payload.channel_id in [961504364269301764, 961503519913938984] and str(payload.emoji) == "<:wahahaha:962970864003989505>" and msg.attachments and msg.reactions[0].count == 20:
 				starboard, starboard_list = db.field("SELECT StarboardList, StarboardPList FROM global")
 				user_starboard = db.field("SELECT StarboardList FROM main WHERE UserID = ?", msg.author.id)
@@ -328,14 +332,17 @@ class kbl_4(commands.Cog):
 		channel = self.client.get_channel(payload.channel_id)
 		msg = await channel.fetch_message(payload.message_id)
 		if payload.channel_id in [961504020508340294, 1045888798791323762] and msg.attachments:
+			voting_bonus = db.field("SELECT VotingBonus FROM main WHERE UserID = ?", payload.user_id)
+			if voting_bonus == 0:
+				voting_bonus = 1
 			if payload.user_id == msg.author.id:
-				await msg.remove_reaction(payload.emoji, payload.member.id)
+				await msg.remove_reaction(payload.emoji, payload.user_id)
 			elif str(payload.emoji) == "<:wahahaha:962970864003989505>":
-				db.execute("UPDATE main SET MonthlyBonusPoints = MonthlyBonusPoints - 1.0 WHERE UserID = ?", payload.user_id)
+				db.execute("UPDATE main SET MonthlyBonusPoints = MonthlyBonusPoints - ? WHERE UserID = ?", (1.0 * voting_bonus), payload.user_id)
 			elif str(payload.emoji) == "❌":
-				db.execute("UPDATE main SET MonthlyBonusPoints = MonthlyBonusPoints + 0.5 WHERE UserID = ?", payload.user_id)
+				db.execute("UPDATE main SET MonthlyBonusPoints = MonthlyBonusPoints + ? WHERE UserID = ?", (0.5 * voting_bonus), payload.user_id)
 			elif str(payload.emoji) == "♻️":
-				db.execute("UPDATE main SET MonthlyBonusPoints = MonthlyBonusPoints + 0.5 WHERE UserID = ?", payload.user_id)
+				db.execute("UPDATE main SET MonthlyBonusPoints = MonthlyBonusPoints + ? WHERE UserID = ?", (0.5 * voting_bonus), payload.user_id)
 
 	@commands.Cog.listener("on_message")
 	async def tgg_voting_rewards(self, message):

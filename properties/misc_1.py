@@ -1839,7 +1839,7 @@ class LPage(ListPageSource):
             for index, entry in enumerate(entries, start=menu.current_page * self.per_page):
                 user = await self.client.fetch_user(entry[0])
                 _user = check_new_username(user)
-                pages.append(f"{index + 1}. {_user}: **{entry[1]} SP**")
+                pages.append(f"{index + 1}. {_user}: **{entry[1]:.2f} SP**")
         elif self._type == "Points":
             for index, entry in enumerate(entries, start=menu.current_page * self.per_page):
                 user = await self.client.fetch_user(entry[0])

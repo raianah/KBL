@@ -206,6 +206,7 @@ class kbl_2(commands.Cog):
 		m, md = db.record("SELECT Maintenance, MaintenanceDuration FROM global")
 		if m == 1:
 			return await ctx.send(f"<@1050024676627320872> is currently in maintenance! Try again later.\n\nETA: <t:{md+3600}:R>")
+		return await ctx.send("**KBLCraft** will end for the meantime. You can reminisce your memories with your experience with KBLCraft here.\n\n- KBLCraft will return soon, via Season 2 with better resources and better pings to cater your creativity + more servers for more events! Please wait for further announcements regarding KBLCraft Season 2.")
 		if suffix is None:
 			embed=Embed(color=0x2f3136, description="**IP**: play.kblipunan.xyz / mc.kblipunan.xyz\n**Port**: 25645\n**Platform**: Java & Bedrock").set_author(name="KBLCRAFT INFO", icon_url="https://cdn.discordapp.com/attachments/961530361119121408/1093886437335781486/avatar.png")
 			await ctx.send(embed=embed)
