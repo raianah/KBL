@@ -20,13 +20,13 @@ Welcome to the KBL Bot! This bot is designed specifically for the KBL Discord se
    - Navigate to the directory where you want to clone the bot.
    - Run the following command to clone the repository:
      ```bash
-     git clone https://github.com/raianah/kbl-discord-bot.git
+     git clone https://github.com/raianah/KBL.git
      ```
 
 3. **Navigate to the Project Directory**:
    - Change into the cloned directory:
      ```bash
-     cd kbl-discord-bot
+     cd KBL
      ```
 
 4. **Set Up a Virtual Environment (Optional but Recommended)**:
