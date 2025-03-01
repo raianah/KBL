@@ -1,6 +1,9 @@
-disnake==2.8.0
+disnake==2.9.3
 humanize
 pytz
 millify
 git+https://github.com/raianah/easy-pil
-apscheduler
+python-dotenv
+disnake-ext-menus
+aiomysql
+# apscheduler

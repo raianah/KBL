@@ -1,10 +1,15 @@
 from sqlite3 import connect
-from os import environ
 from os.path import isfile
 from apscheduler.triggers.cron import CronTrigger
 
 BUILD_PATH = "./data/db/build.sql"
-DB_PATH = "./data/db/database (porcy latest).db"
+DB_PATH = "./data/db/database.db"
+
+"""
+
+    Using this file requires 'apscheduler', which is not included in requirements.txt. You must exclusively include the package if you wish to use this.
+
+"""
 
 conn = connect(DB_PATH, check_same_thread=False)
 
