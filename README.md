@@ -72,7 +72,7 @@ Welcome to the KBL Bot! This bot is designed specifically for the KBL Discord se
      ```bash
      python __main__.py
      ```
-   - Make sure to replace `main.py` with the actual entry point of your bot if it's named differently.
+   - Make sure to replace `__main__.py` with the actual entry point of your bot if it's named differently.
 
 ## Cogs and Files
 
